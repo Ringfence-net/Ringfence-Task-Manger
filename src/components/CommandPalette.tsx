@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, LayoutDashboard, ListTodo, Columns3, TrendingUp, Target, Users, Plus, CheckCircle2 } from 'lucide-react';
+import { Search, LayoutDashboard, ListTodo, Columns3, TrendingUp, Target, Users, Plus, CheckCircle2, CalendarDays, BarChart3 } from 'lucide-react';
 import { useTaskStore } from '../store/taskStore';
 import { STATUS_LABELS, PRIORITY_LABELS } from '../types';
 
@@ -13,9 +13,11 @@ const PAGES = [
   { label: 'Dashboard', to: '/', icon: LayoutDashboard },
   { label: 'Tasks', to: '/tasks', icon: ListTodo },
   { label: 'Kanban', to: '/kanban', icon: Columns3 },
+  { label: 'Calendar', to: '/calendar', icon: CalendarDays },
   { label: 'BD Pipeline', to: '/pipeline', icon: TrendingUp },
   { label: 'Campaigns', to: '/campaigns', icon: Target },
   { label: 'Team Workload', to: '/team', icon: Users },
+  { label: 'Analytics', to: '/analytics', icon: BarChart3 },
 ];
 
 export function CommandPalette({ onClose, onNewTask }: Props) {

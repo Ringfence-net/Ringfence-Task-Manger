@@ -6,6 +6,8 @@ import {
   TrendingUp,
   Target,
   Users,
+  CalendarDays,
+  BarChart3,
   Settings,
   Shield,
   X,
@@ -15,9 +17,11 @@ const nav = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/tasks', icon: ListTodo, label: 'Tasks' },
   { to: '/kanban', icon: Columns3, label: 'Kanban' },
+  { to: '/calendar', icon: CalendarDays, label: 'Calendar' },
   { to: '/pipeline', icon: TrendingUp, label: 'BD Pipeline' },
   { to: '/campaigns', icon: Target, label: 'Campaigns' },
   { to: '/team', icon: Users, label: 'Team' },
+  { to: '/analytics', icon: BarChart3, label: 'Analytics' },
 ];
 
 interface Props {
@@ -53,10 +57,7 @@ export function Sidebar({ open = true, onClose }: Props) {
             </div>
           </div>
           {onClose && (
-            <button
-              onClick={onClose}
-              className="lg:hidden p-1 text-white/40 hover:text-white transition-colors"
-            >
+            <button onClick={onClose} className="lg:hidden p-1 text-white/40 hover:text-white transition-colors">
               <X size={16} />
             </button>
           )}
