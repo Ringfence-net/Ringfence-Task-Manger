@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, ArrowRight, Phone, Mail, FileText, Handshake } from 'lucide-react';
 import { useTaskStore } from '../store/taskStore';
 import { TaskModal } from '../components/TaskModal';
+import { TaskDrawer } from '../components/TaskDrawer';
 import { TaskCard } from '../components/TaskCard';
 import type { Task } from '../types';
 
@@ -24,7 +25,7 @@ const BD_STAGES = [
 export function Pipeline() {
   const { tasks } = useTaskStore();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [addCategory, setAddCategory] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const bdTasks = tasks.filter((t) =>
     BD_CATEGORIES.includes(t.category as typeof BD_CATEGORIES[number])
@@ -34,9 +35,7 @@ export function Pipeline() {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-800">BD Pipeline</h1>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Business development tasks across your pipeline stages
-        </p>
+        <p className="text-sm text-slate-500 mt-0.5">Business development tasks across your pipeline stages</p>
       </div>
 
       {/* Pipeline funnel stats */}
@@ -60,7 +59,7 @@ export function Pipeline() {
         })}
       </div>
 
-      {/* Stage columns */}
+      {/* Stage rows */}
       <div className="space-y-6">
         {BD_STAGES.map((stage) => {
           const stageTasks = bdTasks.filter((t) => t.category === stage.id);
@@ -75,7 +74,7 @@ export function Pipeline() {
                   </span>
                 </div>
                 <button
-                  onClick={() => setAddCategory(stage.id)}
+                  onClick={() => setModalOpen(true)}
                   className="flex items-center gap-1 text-xs text-slate-400 hover:text-[#00b4c8] transition-colors"
                 >
                   <Plus size={12} /> Add
@@ -98,15 +97,8 @@ export function Pipeline() {
         })}
       </div>
 
-      {selectedTask && (
-        <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />
-      )}
-      {addCategory && (
-        <TaskModal
-          defaultStatus="todo"
-          onClose={() => setAddCategory(null)}
-        />
-      )}
+      {selectedTask && <TaskDrawer task={selectedTask} onClose={() => setSelectedTask(null)} />}
+      {modalOpen && <TaskModal onClose={() => setModalOpen(false)} />}
     </div>
   );
 }

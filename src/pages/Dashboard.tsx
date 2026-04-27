@@ -13,10 +13,10 @@ import {
 import { format } from 'date-fns';
 import { useTaskStore } from '../store/taskStore';
 import { CATEGORY_LABELS, CATEGORY_COLORS, PRIORITY_LABELS } from '../types';
-import type { TaskCategory } from '../types';
+import type { TaskCategory, Task } from '../types';
 import { TaskModal } from '../components/TaskModal';
+import { TaskDrawer } from '../components/TaskDrawer';
 import { TaskCard } from '../components/TaskCard';
-import type { Task } from '../types';
 
 function StatCard({
   label,
@@ -103,7 +103,7 @@ export function Dashboard() {
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#0f1e3d] text-white text-sm font-medium rounded-xl hover:bg-[#1a3060] transition-colors shadow-sm"
+          className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-[#0f1e3d] text-white text-sm font-medium rounded-xl hover:bg-[#1a3060] transition-colors shadow-sm"
         >
           <Plus size={15} />
           New Task
@@ -134,34 +134,10 @@ export function Dashboard() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard
-          label="Total Tasks"
-          value={stats.total}
-          icon={TrendingUp}
-          color="#0f1e3d"
-          sub="All time"
-        />
-        <StatCard
-          label="In Progress"
-          value={stats.in_progress}
-          icon={Clock}
-          color="#00b4c8"
-          sub={`${stats.review} in review`}
-        />
-        <StatCard
-          label="Completed"
-          value={stats.done}
-          icon={CheckCircle2}
-          color="#10b981"
-          sub={`${stats.completionRate}% completion rate`}
-        />
-        <StatCard
-          label="Overdue"
-          value={stats.overdue}
-          icon={AlertTriangle}
-          color={stats.overdue > 0 ? '#ef4444' : '#64748b'}
-          sub={`${stats.dueToday} due today`}
-        />
+        <StatCard label="Total Tasks" value={stats.total} icon={TrendingUp} color="#0f1e3d" sub="All time" />
+        <StatCard label="In Progress" value={stats.in_progress} icon={Clock} color="#00b4c8" sub={`${stats.review} in review`} />
+        <StatCard label="Completed" value={stats.done} icon={CheckCircle2} color="#10b981" sub={`${stats.completionRate}% completion rate`} />
+        <StatCard label="Overdue" value={stats.overdue} icon={AlertTriangle} color={stats.overdue > 0 ? '#ef4444' : '#64748b'} sub={`${stats.dueToday} due today`} />
       </div>
 
       {/* Progress bar */}
@@ -216,12 +192,7 @@ export function Dashboard() {
           ) : (
             <div className="space-y-2">
               {urgentTasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  compact
-                  onClick={() => setSelectedTask(task)}
-                />
+                <TaskCard key={task.id} task={task} compact onClick={() => setSelectedTask(task)} />
               ))}
             </div>
           )}
@@ -246,12 +217,7 @@ export function Dashboard() {
           ) : (
             <div className="space-y-2">
               {upcomingTasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  compact
-                  onClick={() => setSelectedTask(task)}
-                />
+                <TaskCard key={task.id} task={task} compact onClick={() => setSelectedTask(task)} />
               ))}
             </div>
           )}
@@ -315,20 +281,11 @@ export function Dashboard() {
                 label={PRIORITY_LABELS[p]}
                 value={stats.byPriority[p] || 0}
                 max={stats.total}
-                color={
-                  p === 'urgent'
-                    ? '#ef4444'
-                    : p === 'high'
-                    ? '#f97316'
-                    : p === 'medium'
-                    ? '#f59e0b'
-                    : '#94a3b8'
-                }
+                color={p === 'urgent' ? '#ef4444' : p === 'high' ? '#f97316' : p === 'medium' ? '#f59e0b' : '#94a3b8'}
               />
             ))}
           </div>
 
-          {/* Quick actions */}
           <div className="mt-5 pt-4 border-t border-slate-100">
             <p className="text-xs font-semibold text-slate-500 mb-3">Quick Actions</p>
             <div className="flex flex-wrap gap-2">
@@ -355,16 +312,8 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Modals */}
-      {modalOpen && (
-        <TaskModal onClose={() => setModalOpen(false)} />
-      )}
-      {selectedTask && (
-        <TaskModal
-          task={selectedTask}
-          onClose={() => setSelectedTask(null)}
-        />
-      )}
+      {modalOpen && <TaskModal onClose={() => setModalOpen(false)} />}
+      {selectedTask && <TaskDrawer task={selectedTask} onClose={() => setSelectedTask(null)} />}
     </div>
   );
 }

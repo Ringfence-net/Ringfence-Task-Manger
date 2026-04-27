@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, Share2, BarChart2, Mail, Search as SearchIcon, Megaphone } from 'lucide-react';
 import { useTaskStore } from '../store/taskStore';
 import { TaskModal } from '../components/TaskModal';
+import { TaskDrawer } from '../components/TaskDrawer';
 import { TaskCard } from '../components/TaskCard';
 import type { Task } from '../types';
 import { CATEGORY_LABELS, CATEGORY_COLORS } from '../types';
@@ -49,7 +50,7 @@ export function Campaigns() {
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#0f1e3d] text-white text-sm font-medium rounded-xl hover:bg-[#1a3060] transition-colors shadow-sm"
+          className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-[#0f1e3d] text-white text-sm font-medium rounded-xl hover:bg-[#1a3060] transition-colors shadow-sm"
         >
           <Plus size={15} />
           New Campaign Task
@@ -72,9 +73,7 @@ export function Campaigns() {
                 >
                   <Icon size={14} style={{ color }} />
                 </div>
-                <h2 className="text-sm font-semibold text-slate-700">
-                  {CATEGORY_LABELS[cat]}
-                </h2>
+                <h2 className="text-sm font-semibold text-slate-700">{CATEGORY_LABELS[cat]}</h2>
                 <span className="text-xs text-slate-400 bg-slate-100 rounded-full px-2 py-0.5">
                   {catTasks.length}
                 </span>
@@ -91,22 +90,15 @@ export function Campaigns() {
         {marketingTasks.length === 0 && (
           <div className="text-center py-20">
             <p className="text-slate-400 text-sm">No campaign tasks yet.</p>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="mt-2 text-[#00b4c8] text-sm hover:underline"
-            >
+            <button onClick={() => setModalOpen(true)} className="mt-2 text-[#00b4c8] text-sm hover:underline">
               Create your first campaign task →
             </button>
           </div>
         )}
       </div>
 
-      {selectedTask && (
-        <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />
-      )}
-      {modalOpen && (
-        <TaskModal onClose={() => setModalOpen(false)} />
-      )}
+      {selectedTask && <TaskDrawer task={selectedTask} onClose={() => setSelectedTask(null)} />}
+      {modalOpen && <TaskModal onClose={() => setModalOpen(false)} />}
     </div>
   );
 }
